@@ -1,0 +1,11 @@
+cd 到与主文件LxeSim.cc的目录下
+执行下面命令
+mkdir test（任意名字都可以）                      //Building a test file.
+cd test
+cmake ../
+make
+./LxeSim (显示几何)     //--interactive
+or ./LxeSim -m macro/run1.mac       //--batch run
+具体用法见下行
+" LxeSim [-m macro ] [-ifinputGDML(Yes|No)] [-g gdml] [-gen ChooseGenerator(gps|muon)] "
+现在默认的ChooseGenerator 是muon。（"Cosmic ray muon generator used!")）

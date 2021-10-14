@@ -1,0 +1,21 @@
+/run/initialize
+/Mu/detector/dimensions 4500 4500 4500 mm
+#/Mu/detector/defaults
+/Mu/detector/PscintL 4000 mm
+/Mu/detector/PscintW 100 mm
+/Mu/detector/PscintH 20 mm
+/Mu/detector/TeflonL 2 mm
+/Mu/detector/TeflonW 2 mm
+#/Mu/detector/windowThicknessPMT 1 mm
+#/Mu/detector/rTrunk 15 mm
+#/Mu/detector/aPMT 60 mm
+#/Mu/detector/bPMT 40 mm
+#/Mu/detector/hPMT 130 mm
+/Mu/detector/PscintYield 10000
+/Mu/detector/PscintFastTime 1.2
+/Mu/detector/PscintSlowTime 20
+/Mu/detector/PscintRindex 1.52
+/Mu/detector/TeflonRindex 1.35
+/Mu/detector/TeflonReflect 0.1
+/Mu/detector/TeflonEfficen 1.0
+/control/execute macro/vis.mac

@@ -1,0 +1,17 @@
+# Initialize kernel
+/run/initialize
+/Mu/detector/PscintYield 0
+/Mu/detector/PscintFastTime 1.2
+/Mu/detector/PscintSlowTime 20
+/Mu/detector/PscintRindex 1.52
+/Mu/detector/TeflonRindex 1.35
+/Mu/detector/TeflonReflect 0.1
+/Mu/detector/TeflonEfficen 1.0
+#/Mu/detector/update
+#/gun/particle mu+
+#/gun/particle mu-
+#/gun/energy 4000 MeV
+#/gun/direction 0 0.1 -1
+#/gun/position 40 60 100 mm
+/run/beamOn 1
+# 
