@@ -72,6 +72,22 @@ public:
   void SettrackID(Int_t i,Int_t j) {m_trackID[i] = j;}
   void Setpdg(Int_t i,Int_t j) {m_pdg[i] = j;}
   void SetMuhitTimes(Int_t i) { m_MuhitTimes = i; }
+	
+  void SetMuedepLxe(Int_t i, Float_t j){m_MuedepLxe[i]=j;}
+  void SetMuKinELxe(Int_t i, Float_t j){m_MuKinELxe[i]=j;}
+  void SetMuGlobTimeLxe(Int_t i, Double_t j) { m_MuGlobTimeLxe[i] = j;}
+  void SetMuposxLxe(Int_t i,Float_t j) {m_Mupos_xLxe[i] = j;}
+  void SetMuposyLxe(Int_t i,Float_t j) {m_Mupos_yLxe[i] = j;}
+  void SetMuposzLxe(Int_t i,Float_t j) {m_Mupos_zLxe[i] = j;}
+  void SetMuMomentumxLxe(Int_t i,Float_t j) {m_MuMomentum_xLxe[i] = j;}
+  void SetMuMomentumyLxe(Int_t i,Float_t j) {m_MuMomentum_yLxe[i] = j;}
+  void SetMuMomentumzLxe(Int_t i,Float_t j) {m_MuMomentum_zLxe[i] = j;}
+  void SetLxeID(Int_t i,Int_t j) {m_LxeID[i] = j;}
+  void SetMuThetaLxe(Int_t i,Float_t j) {m_MuThetaLxe[i] = j;}
+  void SetMuPhiLxe(Int_t i,Float_t j) {m_MuPhiLxe[i] = j;}
+  void SettrackIDLxe(Int_t i,Int_t j) {m_trackIDLxe[i] = j;}
+  void SetpdgLxe(Int_t i,Int_t j) {m_pdgLxe[i] = j;}
+  void SetMuhitTimesLxe(Int_t i) { m_MuhitTimesLxe = i; }
 public:
   static MuAnalysisManager* fManager;
   TFile* newfile;
@@ -129,6 +145,22 @@ public:
   Float_t m_MuPhi[20000000];
   Float_t m_Muedep[20000000];
   Float_t m_MuKinE[20000000];
+	
+  Int_t m_MuhitTimesLxe;
+  Int_t m_LxeID[20000000];
+  Int_t m_trackIDLxe[20000000];
+  Int_t m_pdgLxe[20000000];
+  Float_t m_MuGlobTimeLxe[20000000];
+  Float_t m_Mupos_xLxe[20000000];
+  Float_t m_Mupos_yLxe[20000000];
+  Float_t m_Mupos_zLxe[20000000];
+  Float_t m_MuMomentum_xLxe[20000000];
+  Float_t m_MuMomentum_yLxe[20000000];
+  Float_t m_MuMomentum_zLxe[20000000];
+  Float_t m_MuThetaLxe[20000000];
+  Float_t m_MuPhiLxe[20000000];
+  Float_t m_MuedepLxe[20000000];
+  Float_t m_MuKinELxe[20000000];
 //////////////////////////////////////////////
   
   private:

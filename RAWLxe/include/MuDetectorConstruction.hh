@@ -14,6 +14,7 @@ class G4SubtractionSolid;
 #include "MuPMTSD.hh"
 #include "PscintSD.hh"
 #include "G4Cache.hh"
+#include "LxeSD.hh"
 class MuDetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
@@ -167,6 +168,7 @@ class MuDetectorConstruction : public G4VUserDetectorConstruction
 	//Sensitive Detectors
 	G4Cache<PscintSD*> fScint_SD;
 	G4Cache<MuPMTSD*> fPmt_SD;
+	G4Cache<LxeSD*> fLxe_SD;
 };
 #endif
 
