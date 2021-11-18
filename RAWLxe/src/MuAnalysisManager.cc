@@ -8,6 +8,8 @@
 #include "MuPMTSD.hh"
 #include "PscintHit.hh"
 #include "PscintSD.hh"
+#include "LxeHit.hh"
+#include "LxeSD.hh"
 #include "G4EventManager.hh"
 #include "G4SDManager.hh"
 #include "G4RunManager.hh"
@@ -112,6 +114,22 @@ void MuAnalysisManager::bookEventTree()
   	MCTruthTree->Branch("MuPhi",m_MuPhi,"MuPhi[MuhitTimes]/F");
   	MCTruthTree->Branch("Muedep",m_Muedep,"Muedep[MuhitTimes]/F");
   	MCTruthTree->Branch("MuKinE",m_MuKinE,"MuKinE[MuhitTimes]/F");
+	////
+        MCTruthTree->Branch("MuhitTimesLxe", &m_MuhitTimesLxe, "MuhitTimesLxe/I");
+        MCTruthTree->Branch("LxeID",m_LxeID,"LxeID[MuhitTimesLxe]/I");
+        MCTruthTree->Branch("trackIDLxe",m_trackIDLxe,"trackIDLxe[MuhitTimesLxe]/I");
+        MCTruthTree->Branch("pdgLxe",m_pdgLxe,"pdgLxe[MuhitTimesLxe]/I");
+        MCTruthTree->Branch("MuGlobTimeLxe",m_MuGlobTimeLxe,"MuGlobTimeLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuposXLxe",m_Mupos_xLxe,"MuposXLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuposYLxe",m_Mupos_yLxe,"MuposYLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuposZLxe",m_Mupos_zLxe,"MuposZLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuMomentumXLxe",m_MuMomentum_xLxe,"MuMomentumXLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuMomentumYLxe",m_MuMomentum_yLxe,"MuMomentumYLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuMomentumZLxe",m_MuMomentum_zLxe,"MuMomentumZLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuThetaLxe",m_MuThetaLxe,"MuThetaLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuPhiLxe",m_MuPhiLxe,"MuPhiLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuedepLxe",m_MuedepLxe,"MuedepLxe[MuhitTimesLxe]/F");
+        MCTruthTree->Branch("MuKinELxe",m_MuKinELxe,"MuKinELxe[MuhitTimesLxe]/F");
 }
 
 void MuAnalysisManager::BeginOfRun()
@@ -145,7 +163,8 @@ void MuAnalysisManager::BeginOfEvent()
 {
 	m_nPhotons = 0;
   	m_MuhitTimes = 0;
-  	for(int i = 0; i < 20000000; i++) 	
+ 	m_MuhitTimesLxe = 0;
+ 	for(int i = 0; i < 20000000; i++) 	
 	{
       	m_energy[i] = 0;
       	m_hitTime[i] = 0.;
@@ -177,8 +196,23 @@ void MuAnalysisManager::BeginOfEvent()
       	m_MuPhi[i]=0;
       	m_Muedep[i]=0;
       	m_MuKinE[i]=0;
-    	}
- 	for(int ii = 0; ii < 2880000; ii++)
+	
+	m_LxeID[i]=0;
+        m_trackIDLxe[i]=0;
+        m_pdgLxe[i]=0;
+        m_MuGlobTimeLxe[i]=0;
+        m_Mupos_xLxe[i]=0;
+        m_Mupos_yLxe[i]=0;
+        m_Mupos_zLxe[i]=0;
+        m_MuMomentum_xLxe[i]=0;
+        m_MuMomentum_yLxe[i]=0;
+        m_MuMomentum_zLxe[i]=0;
+        m_MuThetaLxe[i]=0;
+        m_MuPhiLxe[i]=0;
+        m_MuedepLxe[i]=0;
+        m_MuKinELxe[i]=0; 
+   	}
+ 	for(int ii = 0; ii < 20000000; ii++)
 	{
       	m_nPE_byPMT[ii]=0.;
       	m_PMTID_byPMT[ii]=0.;

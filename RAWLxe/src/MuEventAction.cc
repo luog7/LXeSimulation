@@ -26,6 +26,8 @@
 #include "MuPMTSD.hh"
 #include "PscintHit.hh"
 #include "PscintSD.hh"
+#include "LxeHit.hh"
+#include "LxeSD.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo....
 MuEventAction::MuEventAction()
 {
@@ -51,15 +53,18 @@ void MuEventAction::EndOfEventAction(const G4Event* evt)
 	G4SDManager* SDman = G4SDManager::GetSDMpointer();
 	G4int scintCollID = SDman->GetCollectionID("PscintInfo");
 	G4int pmtCollID = SDman->GetCollectionID("MuPMTInfo");
+	G4int LxeCollID = SDman->GetCollectionID("LxeInfo");
 	PscintHitsCollection* scintHC = 0;
   	MuPMTHitsCollection* pmtHC = 0;
-  	G4HCofThisEvent* HCE = evt->GetHCofThisEvent();
+  	LxeHitsCollection* LxeHC = 0;
+	G4HCofThisEvent* HCE = evt->GetHCofThisEvent();
 	if (!HCE){
 	std::cout<<"No hits collection found." << std::endl;
 	}else {
         scintHC = (PscintHitsCollection*)(HCE->GetHC(scintCollID));
 	pmtHC = (MuPMTHitsCollection*)(HCE->GetHC(pmtCollID));
-        }
+        LxeHC = (LxeHitsCollection*)(HCE->GetHC(LxeCollID));
+	}
 	G4int NbHits = pmtHC->entries();
 	//cout<<"G4int NbHits = pmtHC->entries();"<<NbHits<<endl;
 	for (G4int i=0;i<NbHits;i++) {
@@ -142,10 +147,47 @@ void MuEventAction::EndOfEventAction(const G4Event* evt)
 	MuAnalysisManager::getInstance()->SetMuKinE(MuhitTimes,muKinE);
 	MuhitTimes++;
 	}
+	
+	G4int NHit = LxeHC->entries();
+	G4int MuhitTimesLxe = 0;
+        for (G4int j=0;j<NHit;j++){
+        G4ThreeVector posLxe = (*LxeHC)[j]->GetMuGlobPosLxe();
+        G4float    MuposxLxe = posLxe.x();
+        G4float    MuposyLxe = posLxe.y();
+        G4float    MuposzLxe = posLxe.z();
+        G4ThreeVector momentumLxe = (*LxeHC)[j]->GetMuMomentumLxe();
+        G4float    MumomentumxLxe = momentumLxe.x();
+        G4float    MumomentumyLxe = momentumLxe.y();
+        G4float    MumomentumzLxe = momentumLxe.z();
+        G4float    ThetaLxe = momentumLxe.theta();
+        G4float    PhiLxe = momentumLxe.phi();
+        MuAnalysisManager::getInstance()->SetMuposxLxe(MuhitTimesLxe,MuposxLxe);
+        MuAnalysisManager::getInstance()->SetMuposyLxe(MuhitTimesLxe,MuposyLxe);
+        MuAnalysisManager::getInstance()->SetMuposzLxe(MuhitTimesLxe,MuposzLxe);
+        MuAnalysisManager::getInstance()->SetMuMomentumxLxe(MuhitTimesLxe,MumomentumxLxe);
+        MuAnalysisManager::getInstance()->SetMuMomentumyLxe(MuhitTimesLxe,MumomentumyLxe);
+        MuAnalysisManager::getInstance()->SetMuMomentumzLxe(MuhitTimesLxe,MumomentumzLxe);
+        MuAnalysisManager::getInstance()->SetMuThetaLxe(MuhitTimesLxe,ThetaLxe);
+        MuAnalysisManager::getInstance()->SetMuPhiLxe(MuhitTimesLxe,PhiLxe);
+        G4int Lxeid = (*LxeHC)[j]->GetLxeID();
+        G4int trackidLxe = (*LxeHC)[j]->GetTrackIDLxe();
+        G4int pdgLxe = (*LxeHC)[j]->GetPDGLxe();
+        MuAnalysisManager::getInstance()->SetLxeID(MuhitTimesLxe,Lxeid);
+        MuAnalysisManager::getInstance()->SettrackIDLxe(MuhitTimesLxe,trackidLxe);
+        MuAnalysisManager::getInstance()->SetpdgLxe(MuhitTimesLxe,pdgLxe);
+        G4double MuGtimeLxe = (*LxeHC)[j]->GetMuGlobTimeLxe();
+        G4float muedepLxe = (*LxeHC)[j]->GetMuedepLxe();
+        G4float muKinELxe = (*LxeHC)[j]->GetMuKinELxe();
+	MuAnalysisManager::getInstance()->SetMuGlobTimeLxe(MuhitTimesLxe,MuGtimeLxe);
+        MuAnalysisManager::getInstance()->SetMuedepLxe(MuhitTimesLxe,muedepLxe);
+        MuAnalysisManager::getInstance()->SetMuKinELxe(MuhitTimesLxe,muKinELxe);
+        MuhitTimesLxe++;
+	}
 	MuAnalysisManager::getInstance()->SetMuhitTimes(MuhitTimes);
-	MuAnalysisManager::getInstance()->SetNPhotons(nPhotons);
-	MuAnalysisManager::getInstance()->SetnPMTs(m_npmts_byPMT);
-	MuAnalysisManager::getInstance()->EndOfEvent();
+	MuAnalysisManager::getInstance()->SetMuhitTimesLxe(MuhitTimesLxe);
+        MuAnalysisManager::getInstance()->SetNPhotons(nPhotons);
+        MuAnalysisManager::getInstance()->SetnPMTs(m_npmts_byPMT);
+        MuAnalysisManager::getInstance()->EndOfEvent();		
 }
 void MuEventAction::PreUserTrackingAction(const G4Track* /*aTrack*/) {
 }

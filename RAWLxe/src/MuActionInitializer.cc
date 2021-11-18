@@ -1,6 +1,6 @@
 #include "MuActionInitializer.hh"
-#include "NeutrinoSimPrimaryGeneratorAction.hh"
-//#include "MuSimPrimaryGeneratorAction.hh"
+//#include "NeutrinoSimPrimaryGeneratorAction.hh"
+#include "MuSimPrimaryGeneratorAction.hh"
 #include "MuRunAction.hh"
 #include "MuEventAction.hh"
 #include "MuStackingAction.hh"
@@ -14,8 +14,8 @@ MuActionInitializer::MuActionInitializer(MuDetectorConstruction* det,G4String ge
 
 void MuActionInitializer::Build() const
 {
-  //SetUserAction(new MuSimPrimaryGeneratorAction(gun));
-  SetUserAction(new NeutrinoSimPrimaryGeneratorAction());
+  SetUserAction(new MuSimPrimaryGeneratorAction(gun));
+  //SetUserAction(new NeutrinoSimPrimaryGeneratorAction());
   SetUserAction(new MuRunAction(fDetector));
   SetUserAction(new MuEventAction());
 //  SetUserAction(new MuSteppingAction());

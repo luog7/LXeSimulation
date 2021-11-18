@@ -32,6 +32,8 @@
 #include "G4SDManager.hh"
 #include "MuPMTSD.hh"
 #include "PscintSD.hh"
+#include "LxeSD.hh"
+
 MuDetectorConstruction::MuDetectorConstruction(G4String input,G4bool gdml):input_gdml(input), isgdml(gdml)
 {
   	//Reserve Memory and Variables/Pointers for Class Objects
@@ -457,15 +459,28 @@ void MuDetectorConstruction::ConstructSDandField()
         fPmt_SD.Put(PMTSD);
         }
         G4SDManager::GetSDMpointer()->AddNewDetector(fPmt_SD.Get());
-        SetSensitiveDetector("Copper_log",fPmt_SD.Get(),true);
-        if (!fScint_SD.Get()) 
+        //SetSensitiveDetector("Copper_log",fPmt_SD.Get(),true);
+        //SetSensitiveDetector("Lead_log",fPmt_SD.Get(),true);
+	//SetSensitiveDetector("HDPE_log",fPmt_SD.Get(),true);
+	SetSensitiveDetector("Lxe_log",fPmt_SD.Get(),true);
+	if (!fScint_SD.Get()) 
 	{
         G4cout << "Construction /ssteelSD" << G4endl;
         PscintSD* Pscint = new PscintSD("ssteelSD");
         fScint_SD.Put(Pscint);
         }
         G4SDManager::GetSDMpointer()->AddNewDetector(fScint_SD.Get());
-        SetSensitiveDetector("Lxe_log",fScint_SD.Get(),true);
+	//SetSensitiveDetector("Lxe_log",fScint_SD.Get(),true);
+	//SetSensitiveDetector("ssteel_log",fScint_SD.Get(),true);
+	SetSensitiveDetector("Lead_log",fScint_SD.Get(),true);
+	if (!fLxe_SD.Get())
+        {
+        G4cout << "Construction /LxeSD" << G4endl;
+        LxeSD* Lxe = new LxeSD("Lxe_SD");
+        fLxe_SD.Put(Lxe);
+        }
+        G4SDManager::GetSDMpointer()->AddNewDetector(fLxe_SD.Get());
+        SetSensitiveDetector("HDPE_log",fLxe_SD.Get(),true);
 }
 void MuDetectorConstruction::SetaPMT(G4double MajorPMT) {
 	this->aPMT=MajorPMT;

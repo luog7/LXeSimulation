@@ -1,5 +1,5 @@
-#include "PscintSD.hh"
-#include "PscintHit.hh"
+#include "LxeSD.hh"
+#include "LxeHit.hh"
 #include "G4ParticleTypes.hh"
 #include "G4VPhysicalVolume.hh"
 #include "G4LogicalVolume.hh"
@@ -32,29 +32,29 @@
 #include "G4PhysicalConstants.hh"
 #include "G4VProcess.hh"
 #include "G4SystemOfUnits.hh"
-PscintSD::PscintSD( G4String name )
+LxeSD::LxeSD( G4String name )
   : G4VSensitiveDetector(name)
 {
-  	PscintCollection=NULL; 
-  	collectionName.insert("PscintInfo");
+  	LxeCollection=NULL; 
+  	collectionName.insert("LxeInfo");
 }
 
-PscintSD::~PscintSD()
+LxeSD::~LxeSD()
 {
 }
 
-void PscintSD::Initialize(G4HCofThisEvent* HCE){
-  	PscintCollection = new PscintHitsCollection(SensitiveDetectorName,collectionName[0]);
+void LxeSD::Initialize(G4HCofThisEvent* HCE){
+  	LxeCollection = new LxeHitsCollection(SensitiveDetectorName,collectionName[0]);
   	//A way to keep all the hits of this event in one place if needed
   	static G4int HCID = -1;
   	if(HCID<0)
 	{
     	HCID = GetCollectionID(0);
   	}
-  	HCE->AddHitsCollection( HCID, PscintCollection );
+  	HCE->AddHitsCollection( HCID, LxeCollection );
 }
 
-G4bool PscintSD::ProcessHits(G4Step* aStep,G4TouchableHistory* ){
+G4bool LxeSD::ProcessHits(G4Step* aStep,G4TouchableHistory* ){
   	if (aStep == NULL) return false;
   	G4double edep = aStep->GetTotalEnergyDeposit();
   	//if(edep==0.) return false; //No edep so dont count as hit
@@ -74,9 +74,9 @@ G4bool PscintSD::ProcessHits(G4Step* aStep,G4TouchableHistory* ){
   	//if(fTrack->GetParentID()==1&&fTrack->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition()) {G4ThreeVector momentump = fTrack->GetMomentumDirection();double angle2 = momentum.angle(momentump);std::cout<<angle2/twopi*360<<std::endl;}//std::cout<<aStep->GetPostStepPoint()->GetGlobalTime()<<std::endl;
   	//if(fTrack->GetDefinition() == G4OpticalPhoton::OpticalPhotonDefinition()){std::cout<<"TrackID ="<<fTrack->GetTrackID()<<"\t"<<"matername ="<<material->GetName()<<"\t"<<"copyN ="<<copyN<<std::endl;std::cout<<"pname ="<<pname<<"\t"<< "procName ="<<procName<<std::endl;}
 	//if(fTrack->GetDefinition() != G4MuonMinus::MuonMinus() && fTrack->GetDefinition() != G4MuonPlus::MuonPlus() ) return false;
-	if(fTrack->GetDefinition() != G4Neutron::NeutronDefinition() || aStep->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()!="hadElastic") return false;
-	G4cout<<"wa! neutron in LXe "<<fTrack->GetCreatorProcess()->GetProcessName()<<G4endl;
-	
+	//if(fTrack->GetDefinition() != G4Neutron::NeutronDefinition() || aStep->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()!="hadElastic") return false;
+	if(fTrack->GetDefinition() != G4Neutron::NeutronDefinition() || aStep->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName()!="nCapture") return false;
+	G4cout<<"wa! neutron in HDPE "<<fTrack->GetCreatorProcess()->GetProcessName()<<G4endl;
 	//if(fTrack->GetDefinition() != G4Neutron::NeutronDefinition()) return false;
 	//std::cout<<"TrackID ="<<fTrack->GetTrackID()<<"\t"<<"matername ="<<material->GetName()<<"\t"<<"copyN ="<<copyN<<std::endl;std::cout<<"pname ="<<pname<<"\t"<< "procName ="<<procName<<std::endl;
 	//###########################################################
@@ -88,7 +88,7 @@ G4bool PscintSD::ProcessHits(G4Step* aStep,G4TouchableHistory* ){
                 G4cout<<AngleCerenkov/twopi*360<<G4endl;}*/
         //###########################################################
 
-	int Pscintid = get_Pscintid(fTrack);
+	int Lxeid = get_Lxeid(fTrack);
 	G4float muedep = aStep->GetTotalEnergyDeposit();
 	G4StepPoint* thePrePoint = aStep->GetPreStepPoint();G4ThreeVector pos = thePrePoint->GetPosition();
 	//G4StepPoint* thePostPoint = aStep->GetPostStepPoint();G4ThreeVector pos = thePostPoint->GetPosition();
@@ -101,25 +101,25 @@ G4bool PscintSD::ProcessHits(G4Step* aStep,G4TouchableHistory* ){
 	//pos/=2.;
 	//G4cout<<fTrack->GetKineticEnergy()/GeV<<G4endl;
 	G4float time = aStep->GetPostStepPoint()->GetGlobalTime();
-	PscintHit* scintHit = new PscintHit();
-	scintHit->SetPscintID(Pscintid);
-	scintHit->SetTrackID(fTrack->GetTrackID());
-	scintHit->SetPDG(fTrack->GetDefinition()->GetPDGEncoding());
-	scintHit->SetMuGlobPos(pos);
-	scintHit->SetMuGlobTime(time);
-	scintHit->SetMuedep(muedep);
-	scintHit->SetMuKinE(fTrack->GetKineticEnergy()/MeV);
-	scintHit->SetMuMomentum(momentum);
-	PscintCollection->insert(scintHit);
+	LxeHit* xeHit = new LxeHit();
+	xeHit->SetLxeID(Lxeid);
+	xeHit->SetTrackIDLxe(fTrack->GetTrackID());
+	xeHit->SetPDGLxe(fTrack->GetDefinition()->GetPDGEncoding());
+	xeHit->SetMuGlobPosLxe(pos);
+	xeHit->SetMuGlobTimeLxe(time);
+	xeHit->SetMuedepLxe(muedep);
+	xeHit->SetMuKinELxe(fTrack->GetKineticEnergy()/MeV);
+	xeHit->SetMuMomentumLxe(momentum);
+	LxeCollection->insert(xeHit);
 //}
 	return true;
 }
 
-void PscintSD::EndOfEvent(G4HCofThisEvent* ) {}
+void LxeSD::EndOfEvent(G4HCofThisEvent* ) {}
 
-int PscintSD::get_Pscintid(G4Track *track) {
+int LxeSD::get_Lxeid(G4Track *track) {
 
-        int Pscintid= -1;
+        int Lxeid= -1;
         {
         const G4VTouchable* touch= track->GetTouchable();
         int nd= touch->GetHistoryDepth();
@@ -148,17 +148,17 @@ int PscintSD::get_Pscintid(G4Track *track) {
                     }
                     // continue to find
                 }
-                Pscintid= touch->GetReplicaNumber(id+idid-1);
+                Lxeid= touch->GetReplicaNumber(id+idid-1);
                 break;
             }
         }
-        if (Pscintid < 0) {
+        if (Lxeid < 0) {
             G4Exception(" could not find envelope -- where am I !?!", // issue
                     "", //Error Code
                     FatalException, // severity
                     "");
         }
     }
-        return Pscintid;
+        return Lxeid;
 }
 

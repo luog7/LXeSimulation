@@ -58,8 +58,8 @@ G4bool MuPMTSD::ProcessHits(G4Step* aStep,G4TouchableHistory* ){
 	G4double edep = aStep->GetTotalEnergyDeposit();
 	if(edep==0.) return false;
 	G4Track* fTrack = aStep->GetTrack();
-	//if(fTrack->GetDefinition() != G4Neutron::Neutron()) return false;
-	if(fTrack->GetDefinition() != G4MuonMinus::MuonMinus() && fTrack->GetDefinition() != G4MuonPlus::MuonPlus() ) return false;
+	if(fTrack->GetDefinition() != G4Neutron::Neutron()) return false;
+	//if(fTrack->GetDefinition() != G4MuonMinus::MuonMinus() && fTrack->GetDefinition() != G4MuonPlus::MuonPlus() ) return false;
 	//G4cout<<"G4Mu    "<<fTrack->GetDefinition()->GetPDGEncoding()<<endl;
 	//####################################################################
 	//####################################################################

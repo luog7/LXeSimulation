@@ -70,9 +70,9 @@ void MuNuclearBuilder::ConstructProcess()
 
   pManager = G4MuonMinus::MuonMinus()->GetProcessManager();
   pManager->AddDiscreteProcess(muNucProcess);
-  
+  /*
   // Add standard EM Processes for Muon
-  /*G4ParticleDefinition* particle = G4MuonPlus::MuonPlus();
+  G4ParticleDefinition* particle = G4MuonPlus::MuonPlus();
   G4ProcessManager* pmanager = particle->GetProcessManager();    
   pmanager->AddProcess(new G4MuNuclearInteraction("muNucl"),-1,-1,4);       
 
